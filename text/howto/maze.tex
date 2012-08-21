@@ -1,0 +1,23 @@
+\section{Maze}
+
+    \begin{enumerate}
+        \item Find colors that are easy to detect. Typically black and 
+            white for the walls and the free space, and a basic color 
+            like red for the target. An easy way to build it is with red 
+            and black tape on a white board.
+        \item You can build the maze before, but it is easier too build 
+            it while the detector is on, so you can keep track of how 
+            well it is detected.
+        \item Once the camera is placed above the maze, set the 
+            xmin,xmax,ymin,ymax values using the arrows with the 
+            MazeDetector to narrow down the subframe around the maze. 
+            Be sure that the terminal as the focus. Print on screen the 
+            value, write it down and save them in the configuration file.
+        \item Use get\_block\_color functions to get the color values 
+            (RGB) of the wall, the ground and the target. Wall and ground 
+            colors are black and white by default.
+        \item You can adjust the brightness and saturation values to get 
+            better results
+        \item You are now done with the maze
+    \end{enumerate}
+
