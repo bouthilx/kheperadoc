@@ -1,0 +1,160 @@
+\section{Colored grid detector}
+
+    \marginpar{
+        \captionof{figure}{Interface of Colored grid detector}
+        %\vspace{2mm}
+        \includegraphics[width=4.5cm]{./img/MazeDetector_minmaxB.png}
+        The orientation $\theta$ is the angle between the
+        line $\overline{CD}$ and the $x$ axis. It ranges
+        counterclockwise from 0 to 2$\pi$.
+    }
+
+
+
+\subsection{Introduction}
+I needed to get a discretized description of the environment. To do so, 
+I built a detector that discretizes the image and calculates the mean 
+color of every block of the grid. The detector uses a given list of 
+colors and finds the closest colors of this list to the mean color of 
+every block. This can be used to assign types to blocks as in a maze 
+(walls, open space, target, etc).
+
+\subsection{--------- (Algorithm)}
+    \begin{enumerate}
+        \item The detector enhance the colors given the \_saturation and 
+                \_brightness values.
+        \item It calculates the mean color of every block.
+        \item It draw the mean color as a thick border inside blocks of 
+            the raw image
+        \item It calculates the closest color from the mean block color
+        \item It draws the block color in the edited image (under the raw 
+            image)
+        \item It add blocks to the detected objects :
+        \begin{itemize}
+            \item $x,y$ (upper left corner)
+            \item angle=0, size=color index
+        \end{itemize}
+        \item Draw the grid on the raw an edited image
+        \item If in get\_block\_color mode, it draws the mean color of a 
+            given block in the edited image.
+    \end{enumerate}
+
+    \marginpar{
+        \captionof{figure}{Interface of Colored grid detector}
+        %\vspace{2mm}
+        \includegraphics[width=4.5cm]{./img/MazeDetector_get_block_colorB.png}
+        The orientation $\theta$ is the angle between the
+        line $\overline{CD}$ and the $x$ axis. It ranges
+        counterclockwise from 0 to 2$\pi$.
+    }
+
+
+
+\subsection{Improvements}
+
+
+This is not a major problem, I would even say less serious than 
+minor, but the grid is incorrectly drawn when we change the 
+min max values of the subframe. It does not happen on start, 
+only on live changes. It is sometimes annoying, but it does not 
+impact the performance of the detector, neither the usability of it.
+\\
+\\
+It could be useful to change the blocks information mapping. The color 
+index is saved in the size attribute, but we could save the 
+actual size of the block, the length of the side, in this attribute. 
+Still, for rectangular blocks there would miss an attribute to save 
+both side lengths. Even though, the color index could be saved in the 
+angle attribute, which I think will never be useful in this context. 
+
+\subsection{How to use}
+    \begin{enumerate}
+        \item Set the xmin, xmax, ymin and ymax values using the arrows 
+            with to narrow down the subframe around the maze. Be sure 
+            that the terminal as the focus. Print on screen the value, 
+            write it down and save them in the configuration file.
+        \item Use the get\_block\_color mode to get the color values (RGB) 
+            of specific blocks, so you can give more accurate colors to 
+            detect in the configuration file.
+        \item You can adjust the brightness and saturation values to get 
+            better results
+    \end{enumerate}
+
+\subsubsection{Parameters config file}
+    \begin{description} \itemindent=-15pt
+        \item[grid\_x] \hfill \\ int, Number of blocks in x
+        \item[grid\_y] \hfill \\ int,  Number of blocks in y (default = 
+            grid\_x)
+        \item[x\_min] \hfill \\ int, Lower limit of the detection frame on 
+            the image
+        \item[x\_max] \hfill \\ int, Upper limit of the detection frame on 
+            the image
+
+        \item[y\_min] \hfill \\ int, Left limit of the detection frame on 
+            the image
+        \item[y\_max] \hfill \\ int, Right limit of the detection frame on 
+            the image
+        \item[print\_block\_color] \hfill \\ book, Print the mean color of 
+            the block on the raw image
+        \item[get\_block\_color] \hfill \\ bool, Enable the 
+            get\_block\_color on start
+        \item[get\_color\_x] \hfill \\ int,  Initial x position of 
+            get\_block\_color block
+        \item[get\_color\_y] \hfill \\ int,  Initial y position of 
+            get\_block\_color block
+        \item[saturation] \hfill \\ int,  Modify saturation of the image
+        \item[brightness] \hfill \\ int,  Modify brightness of the image
+        \item[colors] \hfill \\ int,int,int$|$int,int,int$|$..., 
+            given colors to detect in RGB form
+    \end{description}
+
+
+
+\subsubsection{Keys}
+    \begin{description} \itemindent=-15pt
+        \item['l'] change minimum (left,up) bounds mode \\
+            \begin{tabular}{ll}
+                {\bf left } & y\_min -= 2 \\
+                {\bf right} & y\_min += 2 \\
+                {\bf up   } & y\_min -= 2 \\
+                {\bf down } & y\_min += 2 \\
+                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max
+            \end{tabular}
+        \item['u'] change maximum (right,down) bounds mode \\
+            \begin{tabular}{ll}
+                {\bf left } & y\_max -= 2 \\
+                {\bf right} & y\_max += 2 \\
+                {\bf up   } & x\_max -= 2 \\
+                {\bf down } & x\_max += 2 \\
+                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max 
+            \end{tabular}
+        \item['b']  change brightness mode \\
+            \begin{tabular}{ll} 
+                {\bf left } & -5 to brightness \\
+                {\bf down } & -5 to brightness \\
+                {\bf right} & +5 to brightness \\
+                {\bf up   } & +5 to brightness \\
+                {\bf 'p'  } & print brightness value 
+            \end{tabular}
+        \item['s'] change saturation mode \\
+            \begin{tabular}{ll}
+                {\bf left } & -2 to saturation \\
+                {\bf down } & -2 to saturation \\
+                {\bf right} & +2 to saturation \\
+                {\bf up   } & +2 to saturation \\
+                {\bf 'p'  } & print saturation value \\
+            \end{tabular}
+        \item['c'] get\_block\_color mode \\
+            \begin{tabular}{ll} 
+                {\bf left } & move get\_block\_color block to the left  \\
+                {\bf right} & move get\_block\_color block to the right \\
+                {\bf down } & move get\_block\_color block down \\
+                {\bf up   } & move get\_block\_color block up \\
+                {\bf 'p'  } & print get\_block\_color block position and 
+                              comparisons \\
+                            & (distance) with mean color of 
+                              the block and \\
+                            & the given colors \\
+            \end{tabular}
+        \item['e'] exit current mode
+    \end{description}

@@ -1,0 +1,20 @@
+\section{Introduction}
+
+The Tapir system is used to detect objects within images. I will use 
+it to detect the Khepera III position and orientation and to build the 
+discretized description of the maze as well. For the maze description, 
+you can see it as the detection of every block (and their type) of the 
+maze seen as a grid.
+\\
+\\
+I first built a detector based on the histogram detector. This detector 
+proved to be too unstable and difficult to manage when ambient lightning 
+change. I then developed a simple color detector that proved to be more 
+stable and easily manageable in this environment. 
+
+Then, I developed a simple colored grid detector to discretize an image 
+and get the mean color of each block. Based on this detector, I built 
+the maze detector that is designed to detect more specifically given 
+colors according to the maze definition (wall color, empty space color, 
+etc). Finally, I built a module to output multiple objects over shared 
+memory, as I needed this for the maze output.

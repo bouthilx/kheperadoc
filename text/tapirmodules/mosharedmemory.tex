@@ -1,0 +1,81 @@
+\section{Multiple object shared memory}
+
+\subsection{Introduction}
+
+The Tapir Sharedmemory output module only shared one object, by the 
+previously build detectors, colored grid detector and maze detector 
+needed to share multiple objects at the same time. 
+
+The objects will be saved in a shared memory segment at a given index 
+(key). This address (key) can be used in another program to fetch the 
+information.
+
+\subsection{--------- (Algorithm)}
+    \begin{enumerate}
+        \item Allocate a shared memory segment with shmget during 
+            initialization
+        \item Assign an index of the shared memory segment for the list 
+            of mutexes 
+        \item Assign an index of the shared memory segment for the list 
+            of objects 
+        \item During send, for each object\_i in objects:
+        \begin{enumerate}
+            \item It locks the mutex\_i of the object\_i
+            \item Saves the object\_i
+            \item Release the mutex\_i
+        \end{enumerate}
+    \end{enumerate}
+
+\subsection{Memory structure}
+
+On the machine I used, sizeof(mutex) was 40 bytes and sizeof(double) 8 
+bytes. I could have used only one mutex for all objects, but it would 
+have slowed down the process. In overall, I never needed to share more 
+than 100 objects. For every objects, there is 5 double, for the slower 
+version it would take:
+\begin{displaymath}
+                100 * 5 * 8Byte +40Byte \simeq 4000 Byte = 4 KB 
+\end{displaymath}
+
+For the faster version, we add a mutex for every object, thus it takes:
+\begin{displaymath}
+                        100 * (5*8Byte +40Byte) = 8000Byte = 8KB
+\end{displaymath}
+
+It takes 2 times more space, but 8KB is still really small, so it is 
+not a problem. Faster is better.
+\\
+\\
+\begin{center}
+\begin{tabular}{l|l}
+    Mutex    & $1$ \\ \hline
+             & $\vdots$ \\ \hline  
+    Mutex    & $n$ \\ \hline
+    item $1$ & x \\ \hline
+    item $1$ & y \\ \hline
+    item $1$ & size \\ \hline 
+    item $1$ & angle \\ \hline
+    item $1$ & runtime \\ \hline
+    $\vdots$ & $\vdots$ \\ \hline
+    item $n$ & x \\ \hline
+    item $n$ & y \\ \hline
+    item $n$ & size \\ \hline 
+    item $n$ & angle \\ \hline
+    item $n$ & runtime
+\end{tabular}
+\end{center}
+
+\subsection{How to use}
+
+Define the number of object that needs to be send and write it in the 
+configuration file. Define a unique key\_id and key\_path combination 
+that will be used in the tapir detector in CLsquare.
+
+\subsubsection{Parameters config file}
+
+    \begin{description} \itemindent=-15pt
+        \item[key\_path] pathname for the key of shared memory segment 
+                (read about ftok())
+        \item[key\_id] key for the shared memory segment (read about ftok())
+        \item[nb\_objects] the number of objects to be send
+    \end{description}
