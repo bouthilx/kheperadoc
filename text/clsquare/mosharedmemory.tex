@@ -1,0 +1,60 @@
+\section{Multiple object shared memory (class)}
+
+\subsection{Introduction}
+
+The Tapir detector sends multiple objects for the maze detection. I 
+needed to built a TapirDetector class to receive those objects from 
+shared memory.
+
+The saved objects will be read at the memory address given by the 
+pathname and the keyid.
+
+\subsection{--------- (Algorithm)}
+
+    \begin{enumerate}
+        \item «Connect» to a shared memory segment with shmget
+        \item Assign an index of the shared memory segment for the list 
+            of mutexes 
+        \item Assign an index of the shared memory segment for the list 
+            of objects 
+        \item During update, for each object\_i in objects:
+        \begin{enumerate}
+            \item It locks the mutex\_i of the object\_i
+            \item Reads the object\_i
+            \item Release the mutex\_i
+        \end{enumerate}
+    \end{enumerate}
+
+\subsection{Memory structure}
+\begin{center}
+\begin{tabular}{l|l}
+    Mutex    & $1$ \\ \hline
+             & $\vdots$ \\ \hline  
+    Mutex    & $n$ \\ \hline
+    item $1$ & x \\ \hline
+    item $1$ & y \\ \hline
+    item $1$ & size \\ \hline 
+    item $1$ & angle \\ \hline
+    item $1$ & runtime \\ \hline
+    $\vdots$ & $\vdots$ \\ \hline
+    item $n$ & x \\ \hline
+    item $n$ & y \\ \hline
+    item $n$ & size \\ \hline 
+    item $n$ & angle \\ \hline
+    item $n$ & runtime
+\end{tabular}
+\end{center}
+
+\subsection{How to use}
+
+Set the number of objects, key\_path and key\_id as set in the 
+configuration file in tapir.
+
+\subsubsection{Parameters config file}
+
+    \begin{description} \itemindent=-15pt
+        \item[key\_path] pathname for the key of shared memory segment 
+                (read about ftok())
+        \item[key\_id] key for the shared memory segment (read about ftok())
+        \item[nb\_objects] the number of objects to be send
+    \end{description}

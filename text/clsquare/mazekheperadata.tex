@@ -1,0 +1,77 @@
+\section{Maze-Khepera data (class)}
+
+\subsection{Introduction}
+
+From the detector, we have a discrete description of the maze, but it 
+is still unreadable for the maze plant. For make use if it, I wrapped 
+the Mazedata class that defines the maze structure used by the maze 
+plant. The wrapper takes in parameter the Tapirdetector, reads the blocks 
+from the detector and writes a maze definition file that MazaData 
+could read.
+
+\subsection{--------- (Algorithm)}
+    \begin{enumerate}
+        \item It first get the maze description from TapirDetector
+        \item It calculates the maze boundaries (Xmin,Xmax, Ymin,Ymax, 
+            X\_extend and y\_extend):
+        \begin{enumerate}
+            \item Min and max are calculated regarding minimum and maximum 
+                positions of the blocks (Do not forget that the detector 
+                can detect a subframe of the image, thus min and max 
+                values are important)
+            \item Since we have upper-left position of the blocks (ref), 
+                xmin and ymin correspond to exact xmin and ymin values 
+                but xmax and ymax are the upper-left position of the 
+                max block. Thus, real xmax and ymax are 
+                xmax+grid\_x\_width,ymax+grid\_y\_width   ***** need to check
+            \item X\_extend,y\_extend = grid\_x,grid\_y (number of different 
+                x positions and different y positions)
+        \end{enumerate}
+        \item It builds a grid to save the maze info
+        \item It loops through the blocks and save the type info in the grid
+        \item Once the grid is build, it saves it in a file as a maze 
+            definition. 
+        \item MazeData is constructed using the saved file maze
+    \end{enumerate}
+
+\subsection{Improvements}
+
+The maze is saved in a grid before writing it in a file. We could have 
+saved the blocks directly from the list to the file without making a 
+grid, but this way we can save it serially from the grid to the file. 
+As it is right now, the objects are already in-order when they are 
+send from the MazeDetector, so we could save it directly in a file 
+without saving it in a grid. But by doing this, an in-order list of 
+objects would be a prerequisite. This way, we could, for whatever 
+reason, send not in order objects and it would work as well. 
+\\
+\\
+We could have transferred the data directly to MazeData without saving 
+it in a maze definition file. We could have inherited from MazeData 
+to do so. But we would need to modify some part of MazeData as they 
+are not private but protected. Also, MazeReward and MazeGraphic rely 
+on the maze definition file to build their maze definition. They could 
+have use the new MazeKheperaData, but it is better if we can avoid 
+modifying more modules.
+\\
+\\
+Whenever someone wants to modify the mapping of the block information 
+(x=x,y=y,size=color index), the lines to modify are in the loop of 
+the save\_maze() function. See the improvements subsection of colored 
+grid detector for more information on this.
+
+\subsection{How to use}
+
+The maze detector must be on. You need to pass the corresponding 
+configuration file for the detector to the class and give a file name 
+to save the maze. 
+
+                    (make a graph for this)
+                    X = (blocks[i].x-x\_min)/ (x\_max-x\_min)/(x\_extend-1)
+                    Y = (blocks[i].y-y\_min)/ (y\_max-y\_min)/(y\_extend-1)
+
+You can then use the functions get\_RX() and get\_RY() to get the (X\_i,Y\_i) 
+values of the image from the (X\_g,Y\_g) coordinates of the grid. Also, 
+you can use get\_centered\_RX() and get\_centered\_RY() to get the (X\_i,Y\_i) 
+in the center of the block in the image from the (X\_g,Y\_g) coordinates 
+of the grid.

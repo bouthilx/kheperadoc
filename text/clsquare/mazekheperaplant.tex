@@ -1,0 +1,64 @@
+\section{Maze-Khepera plant (module)}
+
+\subsection{Introduction}
+
+We want to find the optimal paths through a maze and pilot the Khepera 
+from his position to the target. To do so, the plant needs the maze 
+information through the Tapir detector. The action chosen by the 
+controller will be send to the DirectedKhepera that will navigate it 
+to the target point with the help of the OrientationDetector 
+(ColorDetector and TriangleTracker).
+
+\subsection{Gather information}
+
+It first loads the maze with the help of MazeKheperaData. I don’t know 
+why, but if the detector has run once, then the information will still 
+be accessible via shared memory even If the detector is down. 
+
+If the parameter with\_robot is set to true, it will construct and 
+initialize the robot. Otherwise, it will run as a classic MazePlant 
+without Khepera.
+If the parameter test\_robot\_block is set to true, the program enters an 
+infinite loop and the user is asked to enter x,y position corresponding 
+to the grid positions. This can be used to debug maze block positions. 
+This option might be useless now that the plant is working properly.
+
+\subsection{Pilot the Khepera}
+
+The action is chosen by the controller (as in MazePlant) and 
+is represented by the next position (x\_g,y\_g) in the grid. 
+The position is translated by MazeKheperaData to an (x\_i,y\_i) position 
+in the image which correspond to the center of the grid block. This 
+position (x\_i, y\_i) is send to DirectedKhepera that navigates the 
+Khepera to this position.
+
+\subsection{Improvements}
+
+The most annoying thing with this plant is when we need to abort 
+the experiment while the robot is moving. We always need to keep a 
+second clsquare running with the option manipulate\_robot=true to be 
+able to send a stop command. It would be nice if the plant could catch 
+an abort and send automatically a stop command to the Khepera.
+
+\subsection{How to use}
+    \begin{enumerate}
+        \item Set the maze detector. Be sure that the detection is correct.
+        \item Start frameview if it is not already running
+        \item CLSquare
+        \item If with\_robot=true, stop the maze detector when asked 
+            for and start the Khepera detector.
+    \end{enumerate}
+
+\subsection{Parameters configuration file}
+    \begin{description} \itemindent=-15pt
+        \item[with\_robot] Use the Khepera robot during the experiment 
+            (default false)
+        \item[manipulate\_robot] Manipulate the Khepera with manual 
+            commands (D,l0,l0)
+        \item[test\_robot\_blocks] Send manually the Khepera to grid 
+            positions (x\_g, y\_g)
+    \end{description}
+
+The manipulate\_robot and test\_robot\_blocks parameters prevent 
+experiments. Clsquare stay locked in the init function and quit when 
+the infinite loop of manipulate\_robot or test\_robot\_blocks is broken. 
