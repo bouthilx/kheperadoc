@@ -1,3 +1,16 @@
 \section{Introduction}
 
-???
+The maze plant inside \clsquare already procure a virtual environment to 
+solve the maze problem. It was straightforward to customize it in order 
+to command the \khepera throughout a maze. 
+\\
+\\
+Once the detectors were built, I needed to pass the information from 
+the detector to the plant. I built a wrapper around the maze definition 
+to read the maze definition from the detector rather than from a static 
+file. 
+\\
+\\
+In order to pilot the Khepera in the maze, I built a navigation class 
+that takes $x$, $y$ coordinates in parameters and guides the robot with the 
+help of an orientation detector.
