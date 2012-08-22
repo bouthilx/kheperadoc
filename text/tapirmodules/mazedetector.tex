@@ -1,6 +1,18 @@
 \section{Maze Detector}
+\label{sec:md}
+
+    \marginpar{
+        \includegraphics[width=4.5cm]{./img/MazeDetector_minmaxB.png}
+        \captionof{figure}[Interface of Maze detector]{
+        Interface of maze detector -- 
+        The subframe can be adjusted to a specific region of the image
+        using the $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$ values.
+        Only this region is considered by the detector.}
+        \label{fig:md:interface}
+    }
 
 \subsection{Introduction}
+\label{sec:md:intro}
 
 The colored grid detector worked well to detect mean colors of the blocks, 
 but it was too unstable in some circumstances, around the target for 
@@ -9,14 +21,16 @@ three mean colors. To fix this, I built a subdetector that has two
 method of detection. First it detect the mean color and the closest 
 mean color as for the Colored grid detector, but if the closest mean 
 color is not close enough (distance bigger than max\_distance\_to\_color) 
-then the detected color is the closest one between the wall color, by 
-default black, and the ground color, by default white.   
+then the detected color is the closest one between the wall color (by 
+default black) and the ground color (by default white).
 
-\subsection{--------- (Algorithm)}
+\subsection{Detection and drawing}
+\label{sec:md:algo}
+Here is the algorithm described in chronological order.
 
     \begin{enumerate}
-        \item The detector enhance the colors given the \_saturation and 
-            \_brightness values.
+        \item The detector enhance the colors given the saturation and 
+            brightness values.
         \item It calculates the mean color of every block
         \item It draw the mean color as a thick border inside blocks of 
             the raw image
@@ -37,15 +51,29 @@ default black, and the ground color, by default white.
             \item orientation=0, size=color index (ground=0,wall=1)
         \end{enumerate}
         \item Draw the grid on the raw an edited image
-        \item If in get\_block\_color mode, it draws the mean color of 
-            the (get\_block\_x,get\_block\_y) block in the edited image.
+       \item If in get\_block\_color mode, it draws the mean color of 
+            the block in the edited image (get\_block\_x,get\_block\_y).
+    \marginpar{
+        \includegraphics[width=4.5cm]{./img/MazeDetector_get_block_colorB.png}
+        \captionof{figure}[Get\_object\_color mode]{%
+        Get\_object\_color mode -- 
+        This mode is really useful to get mean color value of 
+        a given block. The mean color is also drawn as you can 
+        see in the image at the end of the arrow.
+        }
+        \label{fig:md:getblockcolor}
+    }
+ 
     \end{enumerate}
 
 \subsection{Improvements}
+\label{sec:md:improvements}
 
-The same improvements of the colored grid detector apply to this one.
+The same improvements of the colored grid detector apply to this one. 
+See section \ref{sec:cgd:improvements} for more information.
 
 \subsection{How to use}
+\label{sec:md:howto}
     \begin{enumerate}
         \item Find colors that are easy to detect. Typically black and 
             white for the walls and the free space, and a basic color 
@@ -55,18 +83,23 @@ The same improvements of the colored grid detector apply to this one.
             it while the detector is on, so you can keep track of how 
             well it is detected.
         \item Once the camera is placed above the maze or the empty board, 
-            set the xmin,xmax,ymin,ymax values using the arrows to narrow 
-            down the subframe around the maze. Be sure that the terminal 
-            as the focus. Print on screen the value, write it down and 
-            save them in the configuration file.
+            set the $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$
+            values using the arrows to narrow 
+            down the subframe around the maze
+            (see figure \ref{fig:md:interface}). Be sure that the terminal 
+            has the focus. Print on terminal the values by pressing
+            the 'p' key. Write it down and 
+            save the values in the configuration file.
         \item Use get\_block\_color mode to get the color values (RGB) 
-            of the wall, the ground and the target. Wall and ground 
+            of the wall, the ground and the target (see 
+            figure \ref{fig:md:getblockcolor}). Wall and ground 
             colors are black and white by default.
         \item You can adjust the brightness and saturation values to 
-            get better results
+            get better results.
     \end{enumerate}
 
     \subsubsection{Parameters config file}
+    \label{sec:md:howto:params}
         \begin{description}
             \item[grid\_x] \hfill \\ int, Number of blocks in x
             \item[grid\_y] \hfill \\ int,  Number of blocks in y 
@@ -102,23 +135,24 @@ The same improvements of the colored grid detector apply to this one.
         \end{description}
 
     \subsubsection{Keys}
+    \label{sec:md:howto:keys}
 
     \begin{description} \itemindent=-15pt
         \item['l'] change minimum (left,up) bounds mode \\
             \begin{tabular}{ll}
-                {\bf left } & y\_min -= 2 \\
-                {\bf right} & y\_min += 2 \\
-                {\bf up   } & y\_min -= 2 \\
-                {\bf down } & y\_min += 2 \\
-                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max
+                {\bf left } & $y_{min}$ -= 2 \\
+                {\bf right} & $y_{min}$ += 2 \\
+                {\bf up   } & $x_{min}$ -= 2 \\
+                {\bf down } & $x_{min}$ += 2 \\
+                {\bf 'p'  } & print $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$
             \end{tabular}
         \item['u'] change maximum (right,down) bounds mode \\
             \begin{tabular}{ll}
-                {\bf left } & y\_max -= 2 \\
-                {\bf right} & y\_max += 2 \\
-                {\bf up   } & x\_max -= 2 \\
-                {\bf down } & x\_max += 2 \\
-                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max 
+                {\bf left } & $y_{max}$ -= 2 \\
+                {\bf right} & $y_{max}$ += 2 \\
+                {\bf up   } & $x_{max}$ -= 2 \\
+                {\bf down } & $x_{max}$ += 2 \\
+                {\bf 'p'  } & print $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$ 
             \end{tabular}
         \item['b']  change brightness mode \\
             \begin{tabular}{ll} 
