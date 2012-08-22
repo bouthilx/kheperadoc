@@ -1,6 +1,8 @@
 \section{Multiple object shared memory (class)}
+\label{sec:mosmc}
 
 \subsection{Introduction}
+\label{sec:mosmc:intro}
 
 The Tapir detector sends multiple objects for the maze detection. I 
 needed to built a TapirDetector class to receive those objects from 
@@ -9,48 +11,61 @@ shared memory.
 The saved objects will be read at the memory address given by the 
 pathname and the keyid.
 
-\subsection{--------- (Algorithm)}
+\subsection{Connecting and reading shared memory segment}
+\label{sec:mosmc:algo}
+Here is the algorithm described in chronological order.
 
     \begin{enumerate}
-        \item «Connect» to a shared memory segment with shmget
-        \item Assign an index of the shared memory segment for the list 
-            of mutexes 
-        \item Assign an index of the shared memory segment for the list 
-            of objects 
-        \item During update, for each object\_i in objects:
+        \item It «connects» to a shared memory segment with shmget.
+        \item It assigns an index of the shared memory segment for the list 
+            of mutexes. (see section \ref{sec:mosmc:ms})
+        \item It assigns an index of the shared memory segment for the list 
+            of objects. (see section \ref{sec:mosmc:ms})
+        \item During update (read value in memory), for each object\_i in objects:
         \begin{enumerate}
-            \item It locks the mutex\_i of the object\_i
-            \item Reads the object\_i
-            \item Release the mutex\_i
+           \item It locks the $\mbox{mutex}_i$ of the $\mbox{object}_i$.
+            \item Reads the $\mbox{object}_i$.
+            \item Releases the $\mbox{mutex}_i$.
         \end{enumerate}
+ 
     \end{enumerate}
 
 \subsection{Memory structure}
+\label{sec:mosmc:ms}
+For more information, see section \ref{sec:mosm:ms}
+
+\begin{displaymath}
+    n = \mbox{number of objects}
+\end{displaymath}
 \begin{center}
-\begin{tabular}{l|l}
-    Mutex    & $1$ \\ \hline
-             & $\vdots$ \\ \hline  
-    Mutex    & $n$ \\ \hline
-    item $1$ & x \\ \hline
-    item $1$ & y \\ \hline
-    item $1$ & size \\ \hline 
-    item $1$ & angle \\ \hline
-    item $1$ & runtime \\ \hline
-    $\vdots$ & $\vdots$ \\ \hline
-    item $n$ & x \\ \hline
-    item $n$ & y \\ \hline
-    item $n$ & size \\ \hline 
-    item $n$ & angle \\ \hline
-    item $n$ & runtime
+\begin{tabular}{c|c|c}
+\label{tab:mosmc:ms}
+   {\bf Rows }      & {\bf Items }  & {\bf Attributes} \\ \hline
+   0                & $\mbox{mutex}_1$  & mutex \\ \hline
+   $\vdots$         & $\vdots$          & $\vdots$      \\ \hline  
+   $n$              & $\mbox{mutex}_n$  & mutex \\ \hline
+   $n+1$            & $\mbox{object}_1$ & x \\ \hline
+   $n+2$            & $\mbox{object}_1$ & y \\ \hline
+   $n+3$            & $\mbox{object}_1$ & size \\ \hline 
+   $n+4$            & $\mbox{object}_1$ & angle \\ \hline
+   $n+5$            & $\mbox{object}_1$ & runtime \\ \hline
+   $\vdots$         & $\vdots$ & $\vdots$ \\ \hline
+   $n + (n-1)*5 +1 = (n-1)*6+2 $ & $\mbox{object}_n$ & x \\ \hline
+   $n + (n-1)*5 +2 = (n-1)*6+3$ & $\mbox{object}_n$ & y \\ \hline
+   $n + (n-1)*5 +3 = (n-1)*6+4$ & $\mbox{object}_n$ & size \\ \hline 
+   $n + (n-1)*5 +4 = (n-1)*6+5$ & $\mbox{object}_n$ & angle \\ \hline
+   $n + (n-1)*5 +5 = 6*n$ & $\mbox{object}_n$ & runtime
 \end{tabular}
 \end{center}
 
 \subsection{How to use}
+\label{sec:mosmc:howto}
 
 Set the number of objects, key\_path and key\_id as set in the 
 configuration file in tapir.
 
 \subsubsection{Parameters config file}
+\label{sec:mosmc:howto:params}
 
     \begin{description} \itemindent=-15pt
         \item[key\_path] pathname for the key of shared memory segment 

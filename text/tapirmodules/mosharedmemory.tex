@@ -20,10 +20,10 @@ Here is the algorithm described in chronological order.
         \item It allocates a shared memory segment with shmget during 
             initialization.
         \item It assigns an index of the shared memory segment for the list 
-            of mutexes. (see table \ref{tab:mosm:ms})
+            of mutexes. (see section \ref{sec:mosm:ms})
         \item It assigns an index of the shared memory segment for the list 
-            of objects. (see table \ref{tab:mosm:ms})
-        \item During send (set value in memory), for each object\_i in objects:
+            of objects. (see section \ref{sec:mosm:ms})
+        \item During send (set value in memory), for each $\mbox{object}_i$ in objects:
         \begin{enumerate}
             \item It locks the $\mbox{mutex}_i$ of the $\mbox{object}_i$.
             \item Saves the $\mbox{object}_i$.
@@ -55,9 +55,9 @@ not a problem. Faster is better.
 \begin{displaymath}
     n = \mbox{number of objects}
 \end{displaymath}
-\label{tab:mosm:ms}
 \begin{center}
 \begin{tabular}{c|c|c}
+\label{tab:mosm:ms}
    {\bf Rows }      & {\bf Items }  & {\bf Attributes} \\ \hline
    0                & $\mbox{mutex}_1$  & mutex \\ \hline
    $\vdots$         & $\vdots$          & $\vdots$      \\ \hline  

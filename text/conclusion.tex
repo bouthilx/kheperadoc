@@ -1,1 +1,30 @@
 \chapter{Conclusion}
+\label{sec:conclusion}
+
+I have explained different modules for detection. There was first two 
+detectors for the orientation, from which the second one, the color 
+detector, proved to be more stable. I then explained how the colored 
+grid detector and the maze detector work in order to detect a maze made 
+of black tape on a white board.
+
+To use the detectors, I needed to build new classes for the Maze-Khepera 
+plant. From the major ones, a class, the MazeKheperaData, wrapped the 
+maze data structure to enable reading from detector rather than static 
+file. But the most important one was the DirectedKhepera class that 
+enables to move the Khepera to specific ($x$, $y$) positions by 
+communicating with it via Bluetooth. 
+\\
+\\
+The system works pretty well with no major flaws. The robot sometimes 
+gets out of the maze but it is quite unusual. Even though, there are 
+still lots of improvements that could be done, as the system sometimes 
+gets unstable and the robot navigates really slowly. 
+\\
+\\
+The project could be pushed farther. We could add the possibility to 
+work with varying target, varying in intensity for a weighted reward or 
+varying in positions. Also, we could enhance the plant and make it 
+continuous. The Khepera would then have more flexibility for his 
+movements and they may look more natural. There are plenty of 
+possibilities with this setup. I hope the structure I made will be 
+useful to build up new ones on it. 

@@ -1,40 +1,66 @@
 \section{Maze-Khepera data (class)}
+\label{sec:mkd}
 
 \subsection{Introduction}
+\label{sec:mkd:intro}
 
 From the detector, we have a discrete description of the maze, but it 
-is still unreadable for the maze plant. For make use if it, I wrapped 
+is still unreadable for the maze plant. To make use if it, I wrapped 
 the Mazedata class that defines the maze structure used by the maze 
 plant. The wrapper takes in parameter the Tapirdetector, reads the blocks 
 from the detector and writes a maze definition file that MazaData 
 could read.
 
-\subsection{--------- (Algorithm)}
+    
+
+\subsection{Convert detector information to maze data}
+\label{sec:mkd:algo}
+Here is the algorithm described in chronological order.
+
+\marginpar{
+        \includegraphics[width=4.5cm]{./img/MazeKheperaData.png}
+        \captionof{figure}[Structure of the list of detected objects]{%
+        Structure of the list of detected objects --
+        Each block of the grid is represented as a blob with 
+        the attributes $x$, $y$ and $type$ which are mapped to the 
+        attributes $x$, $y$, $size$ of the opencv blob object.
+        $x$ and $y$ are left-upper values on the image, noted as $x_i$, 
+        $y_i$, not to confuse with the grid values $x_g$, $y_g$.}
+        \label{fig:mkd:struct}
+    }
+
+
     \begin{enumerate}
         \item It first get the maze description from TapirDetector
-        \item It calculates the maze boundaries (Xmin,Xmax, Ymin,Ymax, 
-            X\_extend and y\_extend):
+        \item It calculates the maze boundaries ($x_{min}$, $x_{max}$, 
+            $y_{min}$, $y_{max}$, $x_{extend}$ and $y_{extend}$):
         \begin{enumerate}
             \item Min and max are calculated regarding minimum and maximum 
                 positions of the blocks (Do not forget that the detector 
                 can detect a subframe of the image, thus min and max 
                 values are important)
-            \item Since we have upper-left position of the blocks (ref), 
-                xmin and ymin correspond to exact xmin and ymin values 
-                but xmax and ymax are the upper-left position of the 
-                max block. Thus, real xmax and ymax are 
-                xmax+grid\_x\_width,ymax+grid\_y\_width   ***** need to check
-            \item X\_extend,y\_extend = grid\_x,grid\_y (number of different 
-                x positions and different y positions)
+            \item Since we have upper-left position of the blocks (see
+                point \ref{sec:cgd:algo:blockattributs}. of 
+                section \ref{sec:cgd:algo}), 
+                $x_{min}$ and $y_{min}$ correspond to exact $x_{min}$ 
+                and $y_{min}$ values 
+                but $x_{max}$ and $y_{max}$ are the upper-left position of the 
+                max block. Thus, real $x_{max}$ and $y_{max}$ are 
+                $x_{max}+gridwidth_x$ and $y_{max}+gridwidth_y$
+            \item $x_{extend}$, $y_{extend}$ = $grid_x$, $grid_y$ 
+                (number of different 
+                $x$ and $y$ positions)
         \end{enumerate}
         \item It builds a grid to save the maze info
-        \item It loops through the blocks and save the type info in the grid
+        \item It loops through the blocks and save the type information
+            in the grid
         \item Once the grid is build, it saves it in a file as a maze 
             definition. 
         \item MazeData is constructed using the saved file maze
     \end{enumerate}
 
 \subsection{Improvements}
+\label{sec:mkd:improvements}
 
 The maze is saved in a grid before writing it in a file. We could have 
 saved the blocks directly from the list to the file without making a 
@@ -61,14 +87,11 @@ the save\_maze() function. See the improvements subsection of colored
 grid detector for more information on this.
 
 \subsection{How to use}
+\label{sec:mkd:howto}
 
 The maze detector must be on. You need to pass the corresponding 
 configuration file for the detector to the class and give a file name 
 to save the maze. 
-
-                    (make a graph for this)
-                    X = (blocks[i].x-x\_min)/ (x\_max-x\_min)/(x\_extend-1)
-                    Y = (blocks[i].y-y\_min)/ (y\_max-y\_min)/(y\_extend-1)
 
 You can then use the functions get\_RX() and get\_RY() to get the (X\_i,Y\_i) 
 values of the image from the (X\_g,Y\_g) coordinates of the grid. Also, 

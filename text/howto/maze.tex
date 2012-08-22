@@ -1,15 +1,17 @@
 \section{Maze}
+\label{sec:howto:maze}
 
     \begin{enumerate}
         \item Find colors that are easy to detect. Typically black and 
             white for the walls and the free space, and a basic color 
             like red for the target. An easy way to build it is with red 
             and black tape on a white board.
-        \item You can build the maze before, but it is easier too build 
+        \item You can build the maze before, but it is easier to build 
             it while the detector is on, so you can keep track of how 
             well it is detected.
         \item Once the camera is placed above the maze, set the 
-            xmin,xmax,ymin,ymax values using the arrows with the 
+            $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$
+            values using the arrows with the 
             MazeDetector to narrow down the subframe around the maze. 
             Be sure that the terminal as the focus. Print on screen the 
             value, write it down and save them in the configuration file.
@@ -21,3 +23,5 @@
         \item You are now done with the maze
     \end{enumerate}
 
+For more information, take a look at the sections \ref{sec:cgd},  
+\ref{sec:md} and \ref{sec:mosm}.

@@ -1,4 +1,5 @@
 \section{Khepera}
+\label{sec:howto:khepera}
 
     \begin{enumerate}
         \item Find a color that is easy to detect given the colors of 
@@ -21,14 +22,14 @@
         \item Click on setup to setup the serial port.
         \item If it works, write down the port. (/dev/rfcomm0 most of the 
             time)
-        \item If it does not work. Try the following : 
-            http://www.k-team.com/forum/index.php?topic=553.0
+        \item If it does not work. Try the following : \\
+            \url{http://www.k-team.com/forum/index.php?topic=553.0}
         \item To test the connection and to be able to stop the Khepera 
             if the CLsquare experiment fails, run 
                 ./CLsquare manipulate\_robot.cls
         \item If the connection fails, try to use minicom as it is 
-            described here: 
-            http://www.k-team.com/forum/index.php?topic=553.0
+            described here:  \\
+            \url{http://www.k-team.com/forum/index.php?topic=553.0}
         \item Once the connection is correctly established, try moving 
             the robot with commands D,l5000,l-5000. you can change 
             values 5000 and -5000 for any values you want between -20000 
@@ -36,3 +37,5 @@
         \item The Khepera is now ready.
     \end{enumerate}
 
+For more information, take a look at the sections \ref{sec:ohd}, 
+\ref{sec:ocd} and \ref{sec:dk}.

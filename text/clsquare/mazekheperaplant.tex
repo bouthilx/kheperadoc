@@ -1,15 +1,18 @@
 \section{Maze-Khepera plant (module)}
+\label{sec:mkp}
 
 \subsection{Introduction}
+\label{sec:mkp:intro}
 
 We want to find the optimal paths through a maze and pilot the Khepera 
 from his position to the target. To do so, the plant needs the maze 
 information through the Tapir detector. The action chosen by the 
 controller will be send to the DirectedKhepera that will navigate it 
-to the target point with the help of the OrientationDetector 
-(ColorDetector and TriangleTracker).
+to the target point with the help of an orientation detector 
+(Histogram detector or color detector with triangle tracker).
 
 \subsection{Gather information}
+\label{sec:mkp:gather}
 
 It first loads the maze with the help of MazeKheperaData. I don’t know 
 why, but if the detector has run once, then the information will still 
@@ -19,20 +22,23 @@ If the parameter with\_robot is set to true, it will construct and
 initialize the robot. Otherwise, it will run as a classic MazePlant 
 without Khepera.
 If the parameter test\_robot\_block is set to true, the program enters an 
-infinite loop and the user is asked to enter x,y position corresponding 
+infinite loop and the user is asked to enter $x$, $y$ position 
+corresponding 
 to the grid positions. This can be used to debug maze block positions. 
 This option might be useless now that the plant is working properly.
 
 \subsection{Pilot the Khepera}
+\label{sec:mkp:pilot}
 
 The action is chosen by the controller (as in MazePlant) and 
-is represented by the next position (x\_g,y\_g) in the grid. 
-The position is translated by MazeKheperaData to an (x\_i,y\_i) position 
+is represented by the next position ($x_g$, $y_g$) in the grid. 
+The position is translated by MazeKheperaData to an ($x_i$, $y_i$) position 
 in the image which correspond to the center of the grid block. This 
-position (x\_i, y\_i) is send to DirectedKhepera that navigates the 
+position ($x_i$, $y_i$) is send to DirectedKhepera that navigates the 
 Khepera to this position.
 
 \subsection{Improvements}
+\label{sec:mkp:improvements}
 
 The most annoying thing with this plant is when we need to abort 
 the experiment while the robot is moving. We always need to keep a 
@@ -41,6 +47,7 @@ able to send a stop command. It would be nice if the plant could catch
 an abort and send automatically a stop command to the Khepera.
 
 \subsection{How to use}
+\label{sec:mkp:howto}
     \begin{enumerate}
         \item Set the maze detector. Be sure that the detection is correct.
         \item Start frameview if it is not already running
@@ -50,13 +57,14 @@ an abort and send automatically a stop command to the Khepera.
     \end{enumerate}
 
 \subsection{Parameters configuration file}
+\label{sec:mkp:params}
     \begin{description} \itemindent=-15pt
         \item[with\_robot] Use the Khepera robot during the experiment 
             (default false)
         \item[manipulate\_robot] Manipulate the Khepera with manual 
             commands (D,l0,l0)
         \item[test\_robot\_blocks] Send manually the Khepera to grid 
-            positions (x\_g, y\_g)
+            positions ($x_g$, $y_g$)
     \end{description}
 
 The manipulate\_robot and test\_robot\_blocks parameters prevent 

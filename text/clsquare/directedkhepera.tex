@@ -1,32 +1,44 @@
 \section{Directed Khepera (class)}
+\label{sec:dk}
 
 \subsection{Introduction}
+\label{sec:dk:intro}
 
-This class aims to pilot the Khepera to a given (x,y) position. To do 
+This class aims to pilot the \khepera to a given ($x$, $y$) position. To do 
 so, we get the position and orientation of the Khepera from a camera 
 hanging from the ceiling. It needs to calculate the needed orientation 
-to drive to a (x,y) position and sends a command to the Khepera via a 
-serialport to make it turn or drives forward.
+to drive to a ($x$, $y$) position and sends a command to the Khepera via a 
+serial port to make it turn or drive forward.
 
 \subsection{Communication}
+\label{sec:dk:comm}
 
 It first opens a port for serial port communication. The serialport 
 communicates via Bluetooth. In Ubuntu, it is usually “/dev/rfcomm0”.
 
-To write commands to the buffer, it is imperative to add a carriage ‘\r’ 
+To write commands to the buffer, it is imperative to add a carriage '$\backslash$r' 
 at the end. If not, the Khepera will not recognize the command. 
 
 The buffer is read char by char. The robot always answers to commands. 
 The buffer is emptied after every command that is sent.
 
 \subsection{Navigation}
+\label{sec:dk:nav}
 
     \marginpar{
-        \captionof{figure}{Navigation based on desired angle}
-        \includegraphics[width=5cm]{./img/desiredangle.png}
-        The orientation $\theta$ is the angle between the
-        line $\overline{CD}$ and the $x$ axis. It ranges
-        counterclockwise from 0 to 2$\pi$.
+        \includegraphics[width=4.5cm]{./img/desiredangle.png}
+        \captionof{figure}[Navigation based on desired angle]{%
+        Navigation based on desired angle --
+        The desired angle $\varphi$ is the orientation needed
+        to access the ($x_{target}$, $y_{target}$) position 
+        in straight line. $\theta$ is the current orientation
+        of the robot. If $\varphi$ falls in the blue region 
+        regarding $\theta$, then the robot should turn left. If
+        $\varphi$ falls in the green region regarding $\theta$, 
+        then the robot should go forward. Finally, if $\varphi$ 
+        falls in the red region regarding $\theta$, the robot should
+        turn right.}
+        \label{fig:dk:nav}
     }
  
     \begin{enumerate}
@@ -34,29 +46,39 @@ The buffer is emptied after every command that is sent.
             the orientation. 
         \item If the detection is not successful and position is unknown, 
             it sends a command to immobilize the robot
-        \item It then calculates the desired angle with desired\_angle = 
-            atan2(y-new\_y,x-new\_x)
-        \item It add PI to the calculated angle and the robot orientation 
-            to get range (0,2PI) rather than (–PI,PI)
-        \item Angle error = desired\_angle – robot\_angle
-        \item If the angle error is absolutely smaller than epsylon 
-            ( abs(angle\_error) < epsilon) it sends a forward command
-        \item If the absolute angle\_error is between epsilon and PI is 
+        \item It then calculates the desired angle 
+            $ \varphi = $
+            atan2($y_{t}-y_{target}$, $x_{t}-x_{target}$)
+        \item It add $\pi$ to the calculated angle and the robot orientation 
+            to get range (0, 2$\pi$) rather than ($-\pi$, $\pi$)
+        \item Angle error $\alpha = \varphi-\theta$ 
+        \item If $|\alpha| < \epsilon_\theta$ (if $\varphi$ fall in green 
+            region in figure 
+            \ref{fig:dk:nav})
+            it sends a forward command
+        \item If $\epsilon_\theta < |\alpha| < \pi$ (if $\varphi$ fall in
+            red region in figure \ref{fig:dk:nav})
             sends a turn right command
-        \item Else send a turn left command
-        \item Do this while $(x-new\_x)^2+(y-new\_y)^2 > epsilon^2$ 
+        \item Else ($\varphi$ fall in blue region in figure \ref{fig:dk:nav}) 
+              sends a turn left command
+        \item Do this while $(x_t-x_{target})^2+(y_t-y_{target})^2 > \epsilon_e^2$ 
     \end{enumerate}
 
+$\epsilon_\theta$ and $\epsilon_e$ are statically defined in the class.
 
 The turn right and turn left commands are graded on the level of angle 
-error. To simplify calculations, negative angles are inverted by adding 
-2*PI before calculating turning speed. The function of the speed is 
-the following:
+error. To simplify calculations, negative angle errors,
+are inverted by adding 
+2$\pi$ before calculating turning speed. The function of the speed, $sp$, 
+is the following:
 
-Speed = angle*(\_max\_speed-\_min\_speed)/(PI-angle\_threshold) + 
-(PI*\_min\_speed-angle\_threshold*\_max\_speed)/(PI-angle\_threshold)
+\begin{displaymath}
+    Sp = \left(\frac{1}{\pi-\epsilon_\theta}\right)\left(\alpha*(sp_{max}-sp_{min}) + 
+\pi*sp_{min}-\epsilon_\theta*sp_{max}\right)
+\end{displaymath}
 
 \subsection{Improvements}
+\label{sec:dk:improvements}
 
 There is no command for the robot for a definite angle rotation. It 
 would be a great enhancement for the rapidity and accuracy of the robot 
@@ -73,11 +95,13 @@ which is incredibly slow. It would be really helpful to speed up both
 processes to get higher accuracy in the navigation.
 
 \subsection{How to use}
+\label{sec:dk:howto}
 The tapir detector must be on. Set parameters of the tapir detector in 
 khepera\_tapir.cfg. To learn how to set up the Bluetooth connection, 
-take a look at the section khepera the chapter How to make an experiment.
+take a look at the section \ref{sec:howto:khepera}.
 
 \subsubsection{Constructor parameters}
+\label{sec:dk:howto:constparams}
     \begin{description} \itemindent=-15pt
         \item[PORT] port of the serialport. Usually “/dev/rfcomm0” in 
             Ubuntu.
@@ -88,6 +112,7 @@ take a look at the section khepera the chapter How to make an experiment.
     \end{description}
 
 \subsubsection{Init parameters}
+\label{sec:dk:howto:initparams}
     \begin{description} \itemindent=-15pt
         \item[manipulate] If true, the robot enters an infinite loop where 
             you can send commands. Write “quit” to end, it then returns 
@@ -95,6 +120,5 @@ take a look at the section khepera the chapter How to make an experiment.
         \item[delta\_t] The sleep time between each loop of the 
             navigation algorithm. Delta\_t seems to need to be equal 
             or higher than 1.0 second because of the time that 
-            take Tapir.update() and write/read serialport commands.
+            takes Tapir.update() and write/read serial port commands.
     \end{description}
-
