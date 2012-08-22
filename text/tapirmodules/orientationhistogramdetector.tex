@@ -10,14 +10,14 @@
         The orientation $\theta$ is the angle between the
         line $\overline{CD}$ and the $x$ axis. It ranges
         counterclockwise from 0 to 2$\pi$.}
-        \label{fig:orientation}
+        \label{fig:ohdorientation}
     }
 
     I first built a detector to detect the robot position and orientation. 
     To do so, I used a histogram detector to detect three dots and calculate
     the angle of the height of the triangle. In order to work properly, two 
     points must be clearly closer to form a triangle that is near to be 
-    isosceles.
+    isosceles. (figure \ref{fig:ohdorientation})
 
     This detector has been split and renamed by Thomas Lampe. 
     To use a similar detector, 
@@ -26,6 +26,7 @@
     information.
 
 \subsection{Detection of the object and his orientation}
+\label{sec:ohd:detection}
 
 \begin{figure}
     \caption{Detection of the position and orientation}
@@ -36,7 +37,7 @@
         
         The points are detected and their size are evaluted to 
         discriminate them from noise}
-        \label{fig:pointdetection}
+        \label{fig:ohdpointdetection}
     \end{subfigure}
     ~
     \begin{subfigure}[h]{0.50\textwidth}
@@ -46,20 +47,20 @@
         orientation --
 
         The points positions are evaluated and the orientation is 
-        calculated from point C to D (see figure \ref{fig:orientation})}
-        \label{fig:orientationdetection}
+        calculated from point C to D (see figure \ref{fig:ohdorientation})}
+        \label{fig:ohdorientationdetection}
     \end{subfigure}
-    \label{fig:podetection}
+    \label{fig:ohdpodetection}
 \end{figure}
  
     The detector first detects blobs with the help of the histogram 
-    detector (figure \ref{fig:pointdetection}). When this is done, it 
+    detector (figure \ref{fig:ohdpointdetection}). When this is done, it 
     iterate through the blobs and selects 
     the three biggest ones.  It then selects the two closer points and 
     calculates the line from D to C to get the angle theta (figure
-    \ref{fig:orientation}), which is the 
-    orientation of the object (figure \ref{fig:orientationdetection}).
-   \\
+    \ref{fig:ohdorientation}), which is the 
+    orientation of the object (figure \ref{fig:ohdorientationdetection}).
+    \\
     \\
     The position of the object is the mean position of the three points.
 
@@ -93,6 +94,7 @@
         detector -- The detected points (white on black) are above and 
         the calculated 
         triangle and orientation are underneath}
+        \label{fig:ohdinterface}
     }
     The Orientation histogram detector is not included in Tapir because 
     the Orientation color detector works better on every aspects, so the 
