@@ -1,36 +1,43 @@
 \section{Colored grid detector}
-
-    \marginpar{
-        \captionof{figure}{Interface of Colored grid detector}
-        %\vspace{2mm}
-        \includegraphics[width=4.5cm]{./img/MazeDetector_minmaxB.png}
-        The orientation $\theta$ is the angle between the
-        line $\overline{CD}$ and the $x$ axis. It ranges
-        counterclockwise from 0 to 2$\pi$.
-    }
-
-
+\label{sec:cgd}
 
 \subsection{Introduction}
+\label{sec:cgd:intro}
 I needed to get a discretized description of the environment. To do so, 
 I built a detector that discretizes the image and calculates the mean 
 color of every block of the grid. The detector uses a given list of 
-colors and finds the closest colors of this list to the mean color of 
-every block. This can be used to assign types to blocks as in a maze 
-(walls, open space, target, etc).
+colors and finds for every block the closest colors of this list to his 
+mean. This can be used to assign types to blocks as in a maze, each 
+different colors represents a different type. (walls, open space, 
+target, etc).
 
-\subsection{--------- (Algorithm)}
+\subsection{Detection and drawing}
+\label{sec:cgd:algo}
+Here is the algorithm described in chronological order.
+
     \begin{enumerate}
-        \item The detector enhance the colors given the \_saturation and 
-                \_brightness values.
+        \item The detector enhance the colors given the saturation and 
+                brightness values.
         \item It calculates the mean color of every block.
-        \item It draw the mean color as a thick border inside blocks of 
+        \item It draws the mean color as a thick border inside blocks of 
             the raw image
         \item It calculates the closest color from the mean block color
         \item It draws the block color in the edited image (under the raw 
             image)
+
+    \marginpar{
+        \includegraphics[width=4.5cm]{./img/MazeDetector_minmaxB.png}
+        \captionof{figure}[Interface of Colored grid detector]{
+        Interface of Colored grid detector -- 
+        The subframe can be adjusted to a specific region of the image
+        using the $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$ values.
+        Only this region is considered by the detector.}
+        \label{fig:cgd:interface}
+    }
+
         \item It add blocks to the detected objects :
         \begin{itemize}
+            \label{sec:cgd:algo:blockattributs}
             \item $x,y$ (upper left corner)
             \item angle=0, size=color index
         \end{itemize}
@@ -39,19 +46,9 @@ every block. This can be used to assign types to blocks as in a maze
             given block in the edited image.
     \end{enumerate}
 
-    \marginpar{
-        \captionof{figure}{Interface of Colored grid detector}
-        %\vspace{2mm}
-        \includegraphics[width=4.5cm]{./img/MazeDetector_get_block_colorB.png}
-        The orientation $\theta$ is the angle between the
-        line $\overline{CD}$ and the $x$ axis. It ranges
-        counterclockwise from 0 to 2$\pi$.
-    }
-
-
 
 \subsection{Improvements}
-
+\label{sec:cgd:improvements}
 
 This is not a major problem, I would even say less serious than 
 minor, but the grid is incorrectly drawn when we change the 
@@ -60,27 +57,47 @@ only on live changes. It is sometimes annoying, but it does not
 impact the performance of the detector, neither the usability of it.
 \\
 \\
-It could be useful to change the blocks information mapping. The color 
+It could be useful to change the blocks information mapping 
+(point \ref{sec:cgd:algo:blockattributs}. of 
+section \ref{sec:cgd:algo}). The color 
 index is saved in the size attribute, but we could save the 
 actual size of the block, the length of the side, in this attribute. 
 Still, for rectangular blocks there would miss an attribute to save 
 both side lengths. Even though, the color index could be saved in the 
-angle attribute, which I think will never be useful in this context. 
+angle attribute, which his an attribute that,
+I think, will never be useful in this context. 
 
 \subsection{How to use}
+\label{sec:cgd:howto}
     \begin{enumerate}
-        \item Set the xmin, xmax, ymin and ymax values using the arrows 
-            with to narrow down the subframe around the maze. Be sure 
-            that the terminal as the focus. Print on screen the value, 
+        \item Set the $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$ 
+            values using the arrow keys
+            to narrow down the subframe around the environement (maze)
+            (see figure \ref{fig:cgd:interface}). Be sure 
+            that the terminal has the focus. Print on terminal the values
+            by pressing the 'p' key, 
             write it down and save them in the configuration file.
         \item Use the get\_block\_color mode to get the color values (RGB) 
             of specific blocks, so you can give more accurate colors to 
-            detect in the configuration file.
+            detect in the configuration file (see 
+            figure \ref{fig:cgd:getblockcolor}).
         \item You can adjust the brightness and saturation values to get 
-            better results
+            better results.
     \end{enumerate}
 
 \subsubsection{Parameters config file}
+\label{sec:cgd:howto:params}
+    \marginpar{
+        \includegraphics[width=4.5cm]{./img/MazeDetector_get_block_colorB.png}
+        \captionof{figure}[Get\_object\_color mode]{%
+        Get\_object\_color mode -- 
+        This mode is really useful to get mean color value of 
+        a given block. The mean color is also drawn as you can 
+        see in the image at the end of the arrow.
+        }
+        \label{fig:cgd:getblockcolor}
+    }
+
     \begin{description} \itemindent=-15pt
         \item[grid\_x] \hfill \\ int, Number of blocks in x
         \item[grid\_y] \hfill \\ int,  Number of blocks in y (default = 
@@ -108,25 +125,24 @@ angle attribute, which I think will never be useful in this context.
             given colors to detect in RGB form
     \end{description}
 
-
-
 \subsubsection{Keys}
+\label{sec:cgd:howto:keys}
     \begin{description} \itemindent=-15pt
         \item['l'] change minimum (left,up) bounds mode \\
             \begin{tabular}{ll}
-                {\bf left } & y\_min -= 2 \\
-                {\bf right} & y\_min += 2 \\
-                {\bf up   } & y\_min -= 2 \\
-                {\bf down } & y\_min += 2 \\
-                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max
+                {\bf left } & $y_{min}$ -= 2 \\
+                {\bf right} & $y_{min}$ += 2 \\
+                {\bf up   } & $x_{min}$ -= 2 \\
+                {\bf down } & $x_{min}$ += 2 \\
+                {\bf 'p'  } & print $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$
             \end{tabular}
         \item['u'] change maximum (right,down) bounds mode \\
             \begin{tabular}{ll}
-                {\bf left } & y\_max -= 2 \\
-                {\bf right} & y\_max += 2 \\
-                {\bf up   } & x\_max -= 2 \\
-                {\bf down } & x\_max += 2 \\
-                {\bf 'p'  } & print x\_min,x\_max,y\_min,y\_max 
+                {\bf left } & $y_{max}$ -= 2 \\
+                {\bf right} & $y_{max}$ += 2 \\
+                {\bf up   } & $x_{max}$ -= 2 \\
+                {\bf down } & $x_{max}$ += 2 \\
+                {\bf 'p'  } & print $x_{min}$, $x_{max}$, $y_{min}$ and $y_{max}$ 
             \end{tabular}
         \item['b']  change brightness mode \\
             \begin{tabular}{ll} 
