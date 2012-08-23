@@ -2,26 +2,26 @@
 \label{sec:howto:clsquare}
 
     \begin{enumerate}
-        \item Set starting positions in Maze.init, 
-        \item Set khepera\_tapir.cfg and tapir.cfg (maze)
+        \item Set starting positions in Maze.init.
+        \item Set khepera\_tapir.cfg and tapir.cfg (maze).
         \item Set train.cls file, you can leave the plant part empty, 
-            you don’t want to train with the robot
+            you do not want to train with the robot.
         \item Set with\_robot.cls file. Be sure that with\_robot=true is in 
             the Plant module.
-        \item Start the maze detector 
+        \item Start the maze detector.
         \item Start frameview in clsquare ./bin/frameview \&
         \item Start training with ./CLsquare train.cls
         \item When training is done, you can start experimenting with 
             Khepera. Before starting the experiment, be sure to have a 
-            \clsquare running with manipulate.cls so you can stop the 
-            robot if any problem arises. For example if \clsquare crash 
+            \clsquare{} running with manipulate.cls so you can stop the 
+            robot if any problem arises. For example if \clsquare{} crash 
             or if the robot fall out of the maze. You should always 
             leave it running when you are experimenting with the 
             Khepera. (D,l0,l0 to stop the robot)
         \item When training is done, start the experiment with Khepera 
             with ./CLsquare with\_robot.cls
         \item When asked for, stop MazeDetector and start the detector 
-            for the khepera
-        \item The Khepera should now be on his way to the target
+            for the khepera.
+        \item The Khepera should now be on his way to the target.
     \end{enumerate}
 

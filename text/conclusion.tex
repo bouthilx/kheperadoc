@@ -8,17 +8,17 @@ grid detector and the maze detector work in order to detect a maze made
 of black tape on a white board.
 
 To use the detectors, I needed to build new classes for the Maze-Khepera 
-plant. From the major ones, a class, the MazeKheperaData, wrapped the 
+plant. From the major ones, a class, the MazeKheperaData, wraps the 
 maze data structure to enable reading from detector rather than static 
-file. But the most important one was the DirectedKhepera class that 
-enables to move the Khepera to specific ($x$, $y$) positions by 
+file. But the most important one is the DirectedKhepera class that 
+enables to move the Khepera to specific ($x_i$, $y_i$) positions by 
 communicating with it via Bluetooth. 
 \\
 \\
 The system works pretty well with no major flaws. The robot sometimes 
 gets out of the maze but it is quite unusual. Even though, there are 
-still lots of improvements that could be done, as the system sometimes 
-gets unstable and the robot navigates really slowly. 
+still lots of improvements that could be done, as the detectors sometimes 
+get unstable and the robot navigates really slowly. 
 \\
 \\
 The project could be pushed farther. We could add the possibility to 

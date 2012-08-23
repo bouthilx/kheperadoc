@@ -4,7 +4,7 @@
 \subsection{Introduction}
 \label{sec:mosm:intro}
 
-The Tapir shared memory output module only share one object, the 
+The Tapir shared memory output module only share one object, but the 
 previously build detectors, colored grid detector and maze detector 
 need to share multiple objects at the same time. 
 
@@ -58,7 +58,7 @@ not a problem. Faster is better.
 \begin{center}
 \begin{tabular}{c|c|c}
 \label{tab:mosm:ms}
-   {\bf Rows }      & {\bf Items }  & {\bf Attributes} \\ \hline
+   {\bf Indices }   & {\bf Items }  & {\bf Attributes} \\ \hline
    0                & $\mbox{mutex}_1$  & mutex \\ \hline
    $\vdots$         & $\vdots$          & $\vdots$      \\ \hline  
    $n$              & $\mbox{mutex}_n$  & mutex \\ \hline

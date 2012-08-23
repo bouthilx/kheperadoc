@@ -6,7 +6,8 @@
             the maze. Different textures or materials may have different 
             effectiveness. Drawing color on a white paper seems really 
             ineffective.
-        \item If you use the HistogrammOrientationDetector, you will need 
+        \item If you use the OrientationHistogramDetector 
+            (HistogramDetector and TriangleTracker), you will need 
             to get the Khepera out of the camera view every time you 
             start the detector. If you use the OrientationColorDetector 
             (ColorDetector and TriangleTracker), you can leave the robot 
@@ -14,7 +15,7 @@
             problem.
         \item Put the Khepera on. 
         \item In Ubuntu, open the Bluetooth administration panel. If 
-            Khepera do not appear in the detected devices click on 
+            Khepera does not appear in the detected devices click on 
             search. If it still does not appear, the battery may not be 
             full enough. Connect the Khepera on the charge and try 
             again. It should appear if it is on and plugged on the charge.
@@ -25,13 +26,13 @@
         \item If it does not work. Try the following : \\
             \url{http://www.k-team.com/forum/index.php?topic=553.0}
         \item To test the connection and to be able to stop the Khepera 
-            if the CLsquare experiment fails, run 
+            if the \clsquare{} experiment fails, run 
                 ./CLsquare manipulate\_robot.cls
         \item If the connection fails, try to use minicom as it is 
             described here:  \\
             \url{http://www.k-team.com/forum/index.php?topic=553.0}
         \item Once the connection is correctly established, try moving 
-            the robot with commands D,l5000,l-5000. you can change 
+            the robot with commands D,l5000,l-5000. You can change 
             values 5000 and -5000 for any values you want between -20000 
             and 20000. 
         \item The Khepera is now ready.

@@ -18,11 +18,12 @@
     the angle of the height of the triangle. In order to work properly, two 
     points must be clearly closer to form a triangle that is near to be 
     isosceles. (figure \ref{fig:ohdorientation})
-
+\\
+\\
     This detector has been split and renamed by Thomas Lampe. 
     To use a similar detector, 
     use the HistogramDetector and the 
-    TriangleTracker. See the \ref{sec:ohd:edit} section for more 
+    TriangleTracker. See the section \ref{sec:ohd:edit} for more 
     information.
 
 \subsection{Detection of the object and his orientation}
@@ -57,7 +58,7 @@
     detector (figure \ref{fig:ohdpointdetection}). When this is done, it 
     iterate through the blobs and selects 
     the three biggest ones.  It then selects the two closer points and 
-    calculates the line from D to C to get the angle theta (figure
+    calculates the line from D to C to get the angle $\theta$ (figure
     \ref{fig:ohdorientation}), which is the 
     orientation of the object (figure \ref{fig:ohdorientationdetection}).
     \\
@@ -69,8 +70,7 @@
 
     The detector is weak to noise. If one of the dots is not correctly 
     detected and get smaller than some noisy blobs, the noisy blob is 
-    detected as one of the dots and the calculated position is not 
-    good.
+    detected as one of the dots and the calculated position is wrong.
 
     We could keep the three points in memory and take the closest points 
     at the next detection. It could still be unstable if the movement is 
@@ -83,7 +83,7 @@
     we restarted the detector, because the histogram should not contain 
     colors of the Khepera. So I decided to build a new detector that would 
     detect specific colors. This way, the detector would be more reliable 
-    or could me more easily reconfigured during ambient light changes. 
+    or could be more easily reconfigured during ambient light changes. 
     Also, we could also leave the Khepera under the camera all the time. 
     \\
     \\
@@ -96,9 +96,6 @@
         triangle and orientation are underneath}
         \label{fig:ohdinterface}
     }
-    The Orientation histogram detector is not included in Tapir because 
-    the Orientation color detector works better on every aspects, so the 
-    one is useless.
 
 \subsection{How to use}
 \label{sec:ohd:howto}
@@ -136,14 +133,14 @@
         \item['+'] \hfill \\ add 'examples\_renew' frames to the histogram
         \item[' ' (space)] \hfill \\ add frames to the histogram until ' ' (space) his pressed again.
         \item['s'] \hfill \\ save the histogram in 'filename'
-        \item['l'] \hfill \\ load the 'filename' histogram
+        \item['l'] \hfill \\ load the histogram from 'filename' 
     \end{description}
 
 \subsection{Edit}
 \label{sec:ohd:edit}
 During the refactoring of the modules to make them compatible with the 
 new Tapir interface, Thomas Lampe have separated the detection and blob 
-selection process. He placed the selection process in a TriangleTracker, 
+selection process. He placed the selection process in TriangleTracker, 
 which makes more sense since it is a tracking process. The detector 
 remains the one on which I built the orientation histogram detector; 
 HistogramDetector. The major improvements to stabilise more the detection 

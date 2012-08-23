@@ -6,7 +6,7 @@
 I needed to get a discretized description of the environment. To do so, 
 I built a detector that discretizes the image and calculates the mean 
 color of every block of the grid. The detector uses a given list of 
-colors and finds for every block the closest colors of this list to his 
+colors and finds for every block the closest color of this list to his 
 mean. This can be used to assign types to blocks as in a maze, each 
 different colors represents a different type. (walls, open space, 
 target, etc).
@@ -16,14 +16,14 @@ target, etc).
 Here is the algorithm described in chronological order.
 
     \begin{enumerate}
-        \item The detector enhance the colors given the saturation and 
+        \item The detector enhances the colors given the saturation and 
                 brightness values.
-        \item It calculates the mean color of every block.
+        \item It calculates the mean color of every block and save it
+            in a grid.
         \item It draws the mean color as a thick border inside blocks of 
-            the raw image
+            the upper image if print\_block\_color={\bf true}
         \item It calculates the closest color from the mean block color
-        \item It draws the block color in the edited image (under the raw 
-            image)
+        \item It draws the block closest color in the lower image 
 
     \marginpar{
         \includegraphics[width=4.5cm]{./img/MazeDetector_minmaxB.png}
@@ -41,9 +41,9 @@ Here is the algorithm described in chronological order.
             \item $x,y$ (upper left corner)
             \item angle=0, size=color index
         \end{itemize}
-        \item Draw the grid on the raw an edited image
+        \item It draws the grid on the upper and lower image
         \item If in get\_block\_color mode, it draws the mean color of a 
-            given block in the edited image.
+            given block in the lower image.
     \end{enumerate}
 
 
@@ -111,8 +111,8 @@ I think, will never be useful in this context.
             the image
         \item[y\_max] \hfill \\ int, Right limit of the detection frame on 
             the image
-        \item[print\_block\_color] \hfill \\ book, Print the mean color of 
-            the block on the raw image
+        \item[print\_block\_color] \hfill \\ bool, Draws the mean color of 
+            the block on the upper image
         \item[get\_block\_color] \hfill \\ bool, Enable the 
             get\_block\_color on start
         \item[get\_color\_x] \hfill \\ int,  Initial x position of 
@@ -127,6 +127,10 @@ I think, will never be useful in this context.
 
 \subsubsection{Keys}
 \label{sec:cgd:howto:keys}
+
+Press 'l', 'u', 'b', 's' or 'c' to enter a mode and 'e' to exit it. You can
+then use the arrow and the 'p' key for the functionality of each mode.
+
     \begin{description} \itemindent=-15pt
         \item['l'] change minimum (left,up) bounds mode \\
             \begin{tabular}{ll}

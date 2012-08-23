@@ -5,13 +5,13 @@
 \label{sec:mosmc:intro}
 
 The Tapir detector sends multiple objects for the maze detection. I 
-needed to built a TapirDetector class to receive those objects from 
+needed to build a TapirDetector class to receive those objects from 
 shared memory.
 
 The saved objects will be read at the memory address given by the 
 pathname and the keyid.
 
-\subsection{Connecting and reading shared memory segment}
+\subsection{Connecting to and reading shared memory segment}
 \label{sec:mosmc:algo}
 Here is the algorithm described in chronological order.
 
@@ -21,7 +21,8 @@ Here is the algorithm described in chronological order.
             of mutexes. (see section \ref{sec:mosmc:ms})
         \item It assigns an index of the shared memory segment for the list 
             of objects. (see section \ref{sec:mosmc:ms})
-        \item During update (read value in memory), for each object\_i in objects:
+        \item During update (read value in memory), for each 
+            $\_mbox{object}_i$ in objects:
         \begin{enumerate}
            \item It locks the $\mbox{mutex}_i$ of the $\mbox{object}_i$.
             \item Reads the $\mbox{object}_i$.
@@ -40,7 +41,7 @@ For more information, see section \ref{sec:mosm:ms}
 \begin{center}
 \begin{tabular}{c|c|c}
 \label{tab:mosmc:ms}
-   {\bf Rows }      & {\bf Items }  & {\bf Attributes} \\ \hline
+   {\bf Indices }   & {\bf Items }  & {\bf Attributes} \\ \hline
    0                & $\mbox{mutex}_1$  & mutex \\ \hline
    $\vdots$         & $\vdots$          & $\vdots$      \\ \hline  
    $n$              & $\mbox{mutex}_n$  & mutex \\ \hline
@@ -64,12 +65,12 @@ For more information, see section \ref{sec:mosm:ms}
 Set the number of objects, key\_path and key\_id as set in the 
 configuration file in tapir.
 
-\subsubsection{Parameters config file}
+\subsubsection{Parameters for configuration file}
 \label{sec:mosmc:howto:params}
 
     \begin{description} \itemindent=-15pt
         \item[key\_path] pathname for the key of shared memory segment 
                 (read about ftok())
         \item[key\_id] key for the shared memory segment (read about ftok())
-        \item[nb\_objects] the number of objects to be send
+        \item[nb\_objects] the number of objects to be read
     \end{description}

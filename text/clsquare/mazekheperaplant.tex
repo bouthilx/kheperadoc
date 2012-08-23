@@ -7,17 +7,19 @@
 We want to find the optimal paths through a maze and pilot the Khepera 
 from his position to the target. To do so, the plant needs the maze 
 information through the Tapir detector. The action chosen by the 
-controller will be send to the DirectedKhepera that will navigate it 
+controller will be send to the DirectedKhepera that will navigate the 
+robot
 to the target point with the help of an orientation detector 
 (Histogram detector or color detector with triangle tracker).
 
 \subsection{Gather information}
 \label{sec:mkp:gather}
 
-It first loads the maze with the help of MazeKheperaData. I don’t know 
-why, but if the detector has run once, then the information will still 
+It first loads the maze with the help of MazeKheperaData. I don't know 
+why, but if the detector run once, then the information will still 
 be accessible via shared memory even If the detector is down. 
-
+\\
+\\
 If the parameter with\_robot is set to true, it will construct and 
 initialize the robot. Otherwise, it will run as a classic MazePlant 
 without Khepera.
@@ -50,13 +52,13 @@ an abort and send automatically a stop command to the Khepera.
 \label{sec:mkp:howto}
     \begin{enumerate}
         \item Set the maze detector. Be sure that the detection is correct.
-        \item Start frameview if it is not already running
-        \item CLSquare
+        \item Start frameview if it is not already running.
+        \item ./CLSquare your\_config\_file.cls
         \item If with\_robot=true, stop the maze detector when asked 
             for and start the Khepera detector.
     \end{enumerate}
 
-\subsection{Parameters configuration file}
+\subsubsection{Parameters for configuration file}
 \label{sec:mkp:params}
     \begin{description} \itemindent=-15pt
         \item[with\_robot] Use the Khepera robot during the experiment 
@@ -68,5 +70,5 @@ an abort and send automatically a stop command to the Khepera.
     \end{description}
 
 The manipulate\_robot and test\_robot\_blocks parameters prevent 
-experiments. Clsquare stay locked in the init function and quit when 
+experiments. \clsquare{} stay locked in the init function and quit when 
 the infinite loop of manipulate\_robot or test\_robot\_blocks is broken. 

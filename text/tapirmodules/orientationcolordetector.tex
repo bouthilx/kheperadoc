@@ -9,14 +9,13 @@ that detects dots within a given color range. Three dots are selected
 and it then calculates the angle of the height of the resulting triangle. 
 In order to work properly, two points must be clearly closer to form a 
 triangle that is near to be isosceles. (figure \ref{fig:ocdorientation})
-
+\\
+\\
 This detector has been split and renamed by Thomas Lampe. 
 To use a similar detector, 
 use the ColorDetector and the 
-TriangleTracker. See the \ref{sec:ocd:edit} section for more 
+TriangleTracker. See the section \ref{sec:ocd:edit} for more 
 information.
-
-
 
 \subsection{Detection of the object and his orientation.}
 \label{sec:ocd:detection}
@@ -55,9 +54,11 @@ information.
     \label{fig:ocdpodetection}
 \end{figure}
 
-The detector enhance the colors given the \_saturation and \_brightness 
+The detector enhance the colors given the saturation and brightness 
 values. It then detects blobs using the opencv function cvInRangeS() 
-(figure \ref{fig:ocdpointdetection}).
+(figure \ref{fig:ocdpointdetection}). Given the mean color $c = (R,G,B)$
+and the range $r = (R,G,B)$, it detects the colors $d=(R,G,B)$ such that
+$c-r < d < c+r$.
 Once the blobs are detected, it selects the three biggest blobs. The 
 two closer blobs are used to calculate the line from middle point D to C (figure 
 \ref{fig:ocdorientation}). 
@@ -78,12 +79,19 @@ We could keep the three points in memory and take the closest points
 at the next detection. It could still be unstable if the movement is 
 fast and noise is closer than the next position. The best option may 
 be to weight the distances with the size of the blobs. 
+\\
+\\
+It would be usefull to add a third frame where we show the range of 
+selected color. Given the mean color $c = (R,G,B)$ and the range 
+$r = (R,G,B)$, it could be a gradation from $c-r$ to $c+r$. 
 
-The drawback compared to Histogram detector is that we need to find 
+\subsection{In comparison with histogram detector}
+\label{sec:ocd:comparison}
+The drawback compared to histogram detector is that we need to find 
 the best color range at the beginning of every set of experiment, 
 because the ambient light may be different from a day to another. When 
 this is done, it is a lot more stable than histogram detector but it 
-is still vulnerable to changing of ambient light. In overall, the changes 
+is still vulnerable to change in ambient light. In overall, the changes 
 in the color range at the beginning of a new set of experiment are 
 small or inexistent.
 
@@ -105,7 +113,7 @@ detector.
 \label{sec:ocd:howto}
     \begin{enumerate}
         \item Before choosing a color, you may test which one is easier 
-        to detect with this detector, given the color in the environment. 
+        to detect with this detector, given the colors of the environment. 
         Square of colored paper seems to fare better than colored 
         dots with pencils on white paper. Take a look at the keys section
         \ref{sec:ocd:howto:keys} to modify the color and range value so
@@ -114,10 +122,10 @@ detector.
         detect. Inclined surface reflects less strong light 
             and thus is easier to detect.
         \item Start the detector. The object can be already in the vision 
-        or not, it doesn’t matter for this detector. 
+        or not, it does not matter for this detector. 
         \item Use the keys to change the color range in order to find the 
         best color range for a stable detection. You may have to play
-        with it times to times due to different sua nlights. 
+        with it times to times due to different sun lights. 
         \item Print the color range to the screen, remember it and write 
         it down in the configuration file so you do not have to modify it 
         at each start.
@@ -126,12 +134,16 @@ detector.
 \subsubsection{Parameters for configuration file}
 \label{sec:ocd:howto:params}
     \begin{description} \itemindent=-15pt
-        \item[box] \hfill \\ draw box for detected blobs (default true)
-        \item[area] \hfill \\ min max minimal and maximal blob sizes
-        \item[color] \hfill \\ R G B (mean color)
-        \item[wide] \hfill \\ R G B (ranges)
-        \item[saturation] \hfill \\ level of saturation (default 0)
-        \item[brightness] \hfill \\ level of brightness (default 0)
+        \item[box] \hfill \\ bool, draw box for detected blobs 
+            (default true)
+        \item[area] \hfill \\ int int, (min,max) define minimum and 
+            maximum size 
+            to detect objects (objects smaller than min or bigger than 
+            max are not detected)
+        \item[color] \hfill \\ int int int, R G B (mean color)
+        \item[wide] \hfill \\ int int int, R G B (ranges)
+        \item[saturation] \hfill \\ int, level of saturation (default 0)
+        \item[brightness] \hfill \\ int, level of brightness (default 0)
     \end{description}
 
 \subsubsection{Keys}
@@ -171,8 +183,8 @@ detector.
     \end{description}
     \vspace{5pt}
     \begin{description} \itemindent=-15pt
-        \item['p'] Print color/range or brightness or saturation based on 
-        current mode
+        \item['p'] Print color/range or brightness or saturation regarding 
+        the current mode
         \item['e'] Get out of brightness/saturation mode (to color/range 
         mode)
     \end{description}
@@ -182,7 +194,7 @@ detector.
 
 During the refactoring of the modules to make them compatible with the 
 new Tapir interface, Thomas Lampe have separated the detection and blob 
-selection process. He placed the selection process in a TriangleTracker, 
+selection process. He placed the selection process in TriangleTracker, 
 which makes more sense since it is a tracking process. The detector was 
 renamed ColorDetector. The major improvements to stabilise more the 
 detection of the triangle will now lie in the TriangleTracker rather 

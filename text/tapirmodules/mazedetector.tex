@@ -18,7 +18,7 @@ The colored grid detector worked well to detect mean colors of the blocks,
 but it was too unstable in some circumstances, around the target for 
 example. The mean color sometimes alternates quickly between two or 
 three mean colors. To fix this, I built a subdetector that has two 
-method of detection. First it detect the mean color and the closest 
+methods of detection. First, it detects the mean color and the closest 
 mean color as for the Colored grid detector, but if the closest mean 
 color is not close enough (distance bigger than max\_distance\_to\_color) 
 then the detected color is the closest one between the wall color (by 
@@ -31,28 +31,26 @@ Here is the algorithm described in chronological order.
     \begin{enumerate}
         \item The detector enhance the colors given the saturation and 
             brightness values.
-        \item It calculates the mean color of every block
-        \item It draw the mean color as a thick border inside blocks of 
-            the raw image
-        \item It calculates the closest color from the mean block color
-        \item Set block color
+        \item It calculates the mean color of every block.
+        \item It draws the mean color as a thick border inside blocks of 
+            the upper image if print\_block\_color={\bf true}.
+        \item It calculates the closest color from the mean block color.
+        \item Set block color:
         \begin{enumerate}
             \item If the closest color is closest than a given threshold, 
-                block color is set to the closest color value
-            \item If the closest color is more far than the given 
-                threshold, block color is set to closest color between 
-                wall color and ground color
+                block color is set to the closest color value.
+            \item Else, block color is set to closest color between 
+                wall color and ground color.
         \end{enumerate}
-        \item It draws the block color in the edited image (under the 
-            raw image)
-        \item Add blocks to the detected objects
+        \item It draws the block selected color in the lower image 
+        \item It adds blocks to the detected objects
         \begin{enumerate}
-            \item x,y (upper left corner)
-            \item orientation=0, size=color index (ground=0,wall=1)
+            \item $x$, $y$ (upper left corner)
+            \item angle=0, size=color index (ground=0,wall=1)
         \end{enumerate}
-        \item Draw the grid on the raw an edited image
-       \item If in get\_block\_color mode, it draws the mean color of 
-            the block in the edited image (get\_block\_x,get\_block\_y).
+        \item It draws the grid on the upper and lower image
+        \item If in get\_block\_color mode, it draws the mean color of 
+            the block in the lower image (get\_block\_x,get\_block\_y).
     \marginpar{
         \includegraphics[width=4.5cm]{./img/MazeDetector_get_block_colorB.png}
         \captionof{figure}[Get\_object\_color mode]{%
@@ -78,7 +76,9 @@ See section \ref{sec:cgd:improvements} for more information.
         \item Find colors that are easy to detect. Typically black and 
             white for the walls and the free space, and a basic color 
             like red for the target. An easy way to build it is with 
-            red and black tape on a white board.
+            red and black tape on a white board. Ground color is assigned
+            to index 0 and wall color to index 1, the other colors given
+            in the configuration file start their index at 2.
         \item You can build the maze before, but it is easier too build 
             it while the detector is on, so you can keep track of how 
             well it is detected.
@@ -98,44 +98,48 @@ See section \ref{sec:cgd:improvements} for more information.
             get better results.
     \end{enumerate}
 
-    \subsubsection{Parameters config file}
+    \subsubsection{Parameters configuration file}
     \label{sec:md:howto:params}
         \begin{description}
-            \item[grid\_x] \hfill \\ int, Number of blocks in x
-            \item[grid\_y] \hfill \\ int,  Number of blocks in y 
+            \item[grid\_x] \hfill \\ int, Number of blocks in $x$.
+            \item[grid\_y] \hfill \\ int,  Number of blocks in $y$. 
                 (default = grid\_x)
             \item[x\_min] \hfill \\ int, Lower limit of the detection 
-                frame on the image
+                frame on the image.
             \item[x\_max] \hfill \\ int, Upper limit of the detection 
-                frame on the image
+                frame on the image.
             \item[y\_min] \hfill \\ int, Left limit of the detection frame 
                 on the image
             \item[y\_max] \hfill \\ int, Right limit of the detection 
                 frame on the image
-            \item[print\_block\_color] \hfill \\ book, Print the mean 
-                color of the block on the raw image
+            \item[print\_block\_color] \hfill \\ bool, Draws the mean 
+                color of the block on the upper image
             \item[get\_block\_color] \hfill \\ bool, Enable the 
                 get\_block\_color on start
-            \item[get\_color\_x] \hfill \\ int,  Initial x position of 
+            \item[get\_color\_x] \hfill \\ int,  Initial $x$ position of 
                 get\_block\_color block
-            \item[get\_color\_y] \hfill \\ int,  Initial y position of 
+            \item[get\_color\_y] \hfill \\ int,  Initial $y$ position of 
                 get\_block\_color block
             \item[saturation] \hfill \\ int,  Modify saturation of the 
                 image
             \item[brightness] \hfill \\ int,  Modify brightness of the 
                 image
-            \item[colors] \hfill \\ int,int,int|int,int,int|..., given 
+            \item[colors] \hfill \\ int,int,int$|$int,int,int$|$..., given 
                 colors to detect in RGB form
             \item[ground] \hfill \\ int,int,int, color of the ground 
-                (default = 155,155,155)(white)
+                (default = 255,255,255)(white)
             \item[walls] \hfill \\ int,int,int, color of the walls 
                 (default = 0,0,0)(black)
             \item[max\_distance\_to\_color] \hfill \\ int, maximal 
-                distance to color before it is counted as ground of walls
+                distance to color before the block mean color
+                is evaluated as ground or wall.
         \end{description}
 
     \subsubsection{Keys}
     \label{sec:md:howto:keys}
+
+Press 'l', 'u', 'b', 's' or 'c' to enter a mode and 'e' to exit it. You can
+then use the arrow and the 'p' key for the functionality of each mode.
 
     \begin{description} \itemindent=-15pt
         \item['l'] change minimum (left,up) bounds mode \\

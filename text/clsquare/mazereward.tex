@@ -2,7 +2,8 @@
 
 \subsection{Introduction}
 
-If we use Plant as reward module, the mainloop of CLsquare try to destroy 
+If we use the plant as a reward module, the mainloop of CLsquare try to 
+destroy 
 the plant 2 times at the end of the «experiment». It tries to destroy 
 the plant, and latter the reward module, but the reward module is the 
 same as the plant, so the program crash because the plant is already 
@@ -10,8 +11,8 @@ destroyed.
 
 So I decided to build a dummy reward module. It returns reward 1 
 whatever are the state and the action. It loads the maze from maze.def 
-to know where is (are) the goal(s) so it can evaluate the function 
-is\_terminal().
+to know where is the goal so it can evaluate the function 
+is\_terminal(current_state).
 
 \subsection{How to use}
 

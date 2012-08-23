@@ -4,7 +4,8 @@
 \subsection{Introduction}
 \label{sec:dk:intro}
 
-This class aims to pilot the \khepera to a given ($x$, $y$) position. To do 
+This class aims to pilot the \khepera{} to a given ($x$, $y$) position. 
+To do 
 so, we get the position and orientation of the Khepera from a camera 
 hanging from the ceiling. It needs to calculate the needed orientation 
 to drive to a ($x$, $y$) position and sends a command to the Khepera via a 
@@ -13,7 +14,7 @@ serial port to make it turn or drive forward.
 \subsection{Communication}
 \label{sec:dk:comm}
 
-It first opens a port for serial port communication. The serialport 
+It first opens a port for serial port communication. The serial port 
 communicates via Bluetooth. In Ubuntu, it is usually “/dev/rfcomm0”.
 
 To write commands to the buffer, it is imperative to add a carriage '$\backslash$r' 
@@ -70,7 +71,8 @@ The turn right and turn left commands are graded on the level of angle
 error. To simplify calculations, negative angle errors,
 are inverted by adding 
 2$\pi$ before calculating turning speed. The function of the speed, $sp$, 
-is the following:
+is the following, where $sp_{min}$ and $sp_{max}$ are respectively the
+minimal and maximal speed of the robot:
 
 \begin{displaymath}
     Sp = \left(\frac{1}{\pi-\epsilon_\theta}\right)\left(\alpha*(sp_{max}-sp_{min}) + 
@@ -83,11 +85,12 @@ is the following:
 There is no command for the robot for a definite angle rotation. It 
 would be a great enhancement for the rapidity and accuracy of the robot 
 movements if we could find a way to make it precise turns of a given 
-angle with a single command. There is a command to make a precise turn 
+angle with a single command. There is a command to make precise turn 
 of the wheels, but it doesn’t interpolate directly to a complete robot 
 rotation of a precise angle. We would need to calculate how much the 
 Khepera moves for a precise rotation of the wheels.
-
+\\
+\\
 The update of the tapir detector and the time between read/write commands 
 on the buffer of the serial port are really slow. The tapir detector 
 seems to update values at a rate between 1 to 2 times per second, 
@@ -105,7 +108,7 @@ take a look at the section \ref{sec:howto:khepera}.
     \begin{description} \itemindent=-15pt
         \item[PORT] port of the serialport. Usually “/dev/rfcomm0” in 
             Ubuntu.
-        \item[Max\_speed, min\_speed (optional)] Be carefull if you set 
+        \item[max\_speed, min\_speed (optional)] Be carefull if you set 
             those parameters. The update time of the detector is slow 
             and serial port communication too, so if the max\_speed is 
             too high, there might be overruns.
