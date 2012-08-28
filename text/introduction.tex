@@ -10,14 +10,13 @@ called KoreBot II that can provide the \khepera{} limited computing
 capacity. 
 
 \subsubsection{Kind of research that will make use of it}
-As the research in the lab is directed toward expensive machine learning 
+As the research in the lab is directed towards computational expensive machine learning 
 algorithms, the limited computing capacity of the KoreBot II was not 
 interesting. It would be more efficient to use the computing power of 
 a dedicated computer and communicate with the \khepera{} through 
 Bluetooth.
 
-The actual researches of Manuel Blum do not explicitly concern problems 
-of mobile robotics. Thus, it has been decided that the first environment 
+It has been decided that the first environment 
 in which the \khepera{} will evolve would not make use of the sensors, 
 but of an external detector that keeps track of the robot position and 
 orientation. The main idea is simply to solve a physical problem based 
@@ -31,9 +30,9 @@ target. As I concentrated on building the modules needed to detect and
 pilot the \khepera{}, I used this plant so I do not have to worry 
 about the problem itself (solving a maze).
 
-In a first time, I built a module to detect the position and the 
+At first, I built a module to detect the position and the 
 orientation of the \khepera{} with the help of a camera hanging from 
-the ceiling above the maze. In a second time, I created a navigation 
+the ceiling above the maze. Then, I created a navigation 
 system for the robot with the help of the position detector. In a 
 last step, I built a module to get a virtual discretized description 
 of a physical maze. I finally linked the detectors with the maze plant 
@@ -42,7 +41,7 @@ that I customized a little bit.
 \\
 In the first chapter of this document, I will explain the modules built 
 for the detectors inside of the Tapir system. In the second chapter, 
-I will explain every classes and modules I had to build for the \clsquare{}.
+I will explain all classes and modules I had to build for the \clsquare{}.
 Then in the third chapter, I will explain how to set up and run an 
 experiment with the \khepera{} and a maze using the tools explained 
 in previous chapters. 

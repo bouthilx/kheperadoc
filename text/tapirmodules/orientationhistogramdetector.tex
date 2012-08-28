@@ -56,7 +56,7 @@
  
     The detector first detects blobs with the help of the histogram 
     detector (figure \ref{fig:ohdpointdetection}). When this is done, it 
-    iterate through the blobs and selects 
+    iterates through the blobs and selects 
     the three biggest ones.  It then selects the two closer points and 
     calculates the line from D to C to get the angle $\theta$ (figure
     \ref{fig:ohdorientation}), which is the 
@@ -111,8 +111,8 @@
         \item Start the detector and wait a few second until it stops 
             adding frames to the histogram.
         \item Add the object to the environment. 
-        \item It should be detector properly. If not, try modifying the 
-            ambiant light or adding more frames with the ' ' (space) 
+        \item It should be detected properly. If not, try modifying the 
+            ambient light or adding more frames with the ' ' (space) 
             key while the robot is removed from the view.
     \end{enumerate}
 
@@ -138,11 +138,10 @@
 
 \subsection{Edit}
 \label{sec:ohd:edit}
-During the refactoring of the modules to make them compatible with the 
-new Tapir interface, Thomas Lampe have separated the detection and blob 
-selection process. He placed the selection process in TriangleTracker, 
-which makes more sense since it is a tracking process. The detector 
-remains the one on which I built the orientation histogram detector; 
-HistogramDetector. The major improvements to stabilise more the detection 
-of the triangle will now lie in TriangleTracker rather than in 
-HistogramDetector.
+During the refactoring of the modules to make them compatible with the new
+Tapir interface, the detection and blob selection process was separated. The
+selection process was placed in TriangleTracker, which makes more sense
+since it is a tracking process. The detector remains the one on which I
+built the orientation histogram detector; HistogramDetector. The major
+improvements to stabilise more the detection of the triangle will now lie in
+TriangleTracker rather than in HistogramDetector.

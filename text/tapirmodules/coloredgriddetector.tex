@@ -18,7 +18,7 @@ Here is the algorithm described in chronological order.
     \begin{enumerate}
         \item The detector enhances the colors given the saturation and 
                 brightness values.
-        \item It calculates the mean color of every block and save it
+        \item It calculates the mean color of every block and saves it
             in a grid.
         \item It draws the mean color as a thick border inside blocks of 
             the upper image if print\_block\_color={\bf true}
@@ -62,8 +62,8 @@ It could be useful to change the blocks information mapping
 section \ref{sec:cgd:algo}). The color 
 index is saved in the size attribute, but we could save the 
 actual size of the block, the length of the side, in this attribute. 
-Still, for rectangular blocks there would miss an attribute to save 
-both side lengths. Even though, the color index could be saved in the 
+Still, for rectangular blocks an attribute to save both side lengths 
+would be missing. Even though, the color index could be saved in the 
 angle attribute, which is an attribute that,
 I think, will never be useful in this context. 
 
