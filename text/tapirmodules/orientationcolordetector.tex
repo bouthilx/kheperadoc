@@ -125,7 +125,7 @@ detector.
         or not, it does not matter for this detector. 
         \item Use the keys to change the color range in order to find the 
         best color range for a stable detection. You may have to play
-        with it times to times due to different sun lights. 
+        with it from time to time due to different light conditions. 
         \item Print the color range to the screen, remember it and write 
         it down in the configuration file so you do not have to modify it 
         at each start.
@@ -193,8 +193,8 @@ detector.
 \label{sec:ocd:edit}
 
 During the refactoring of the modules to make them compatible with the 
-new Tapir interface, Thomas Lampe have separated the detection and blob 
-selection process. He placed the selection process in TriangleTracker, 
+new Tapir interface, the detection and blob selection process has been 
+separated. The selection process was placed in TriangleTracker, 
 which makes more sense since it is a tracking process. The detector was 
 renamed ColorDetector. The major improvements to stabilise more the 
 detection of the triangle will now lie in the TriangleTracker rather 
